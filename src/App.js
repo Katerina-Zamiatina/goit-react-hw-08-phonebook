@@ -1,29 +1,44 @@
-import './App.css';
-import { connect } from 'react-redux';
+import { lazy, Suspense } from 'react';
+import { Route, Switch } from 'react-router-dom';
 import Loader from 'react-loader-spinner';
-import Container from './components/Container';
-import Form from './components/Form';
-import ContactsList from './components/Contacts';
-import Filter from './components/Filter';
-import { getLoading } from './redux/contacts/contacts-selectors';
+import routes from './routes';
 
-function App({ isLoading }) {
+const RegisterPage = lazy(() =>
+  import('./pages/RegisterPage' /* webpackChunkName: "RegisterPage" */),
+);
+const LoginPage = lazy(() =>
+  import('./pages/LoginPage' /* webpackChunkName: "LoginPage" */),
+);
+const ContactsPage = lazy(() =>
+  import('./pages/ContactsPage' /* webpackChunkName: "ContactsPage" */),
+);
+// const NotFoundPage = lazy(() =>
+//   import('./pages/NotFoundPage' /* webpackChunkName: "NotFoundPage" */),
+// );
+
+function App() {
   return (
-    <Container>
-      <h1>Phonebook</h1>
-      <Form />
-      <h2>Contacts</h2>
-      <Filter />
-      <ContactsList />
-      {isLoading && (
-        <Loader type="ThreeDots" color="#818181" height={80} width={80} />
-      )}
-    </Container>
+    <>
+      <Suspense
+        fallback={
+          <Loader
+            type="ThreeDots"
+            color="#4c4e59"
+            height={80}
+            width={80}
+            className="Loader"
+          />
+        }
+      >
+        <Switch>
+          <Route exact path={routes.register} component={RegisterPage} />
+          <Route path={routes.login} component={LoginPage} />
+          <Route path={routes.contacts} component={ContactsPage} />
+          {/* <Route component={NotFoundPage} /> */}
+        </Switch>
+      </Suspense>
+    </>
   );
 }
 
-const mapStateToProps = state => ({
-  isLoading: getLoading(state),
-});
-
-export default connect(mapStateToProps, null)(App);
+export default App;
