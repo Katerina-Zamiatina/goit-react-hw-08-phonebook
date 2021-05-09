@@ -1,31 +1,24 @@
 import axios from 'axios';
-import * as actions from './login-actions-actions';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
-axios.defaults.baseURL = 'http://localhost:4040';
+axios.defaults.baseURL = 'https://connections-api.herokuapp.com';
 
-export const fetchLogin = () => async dispatch => {
-  dispatch(actions.fetchLoginRequest());
+export const token = {
+  set(token) {
+    axios.defaults.headers.common.Authorization = `Bearere ${token}`;
+  },
+  unset() {
+    axios.defaults.headers.common.Authorization = '';
+  },
+};
 
+/*
+ * POST @ /users/signup
+ * body: { name, email, password }
+ * После успешной регистрации добавляем токен в HTTP-заголовок
+ */
+
+const register = createAsyncThunk('auth/register', async credentials => {
   try {
-    const { data } = await axios.get('/contacts');
-    dispatch(actions.fetchLoginSuccess(data));
-  } catch (error) {
-    dispatch(actions.fetchLoginError(error));
-  }
-};
-
-export const addLogin = payload => dispatch => {
-  dispatch(actions.addLoginRequest());
-  axios
-    .post('/contacts', payload)
-    .then(({ data }) => dispatch(actions.addLoginSuccess(data)))
-    .catch(error => dispatch(actions.addLoginError(error)));
-};
-
-export const deleteLogin = payload => dispatch => {
-  dispatch(actions.deleteLoginRequest());
-  axios
-    .delete(`/contacts/${payload}`)
-    .then(() => dispatch(actions.deleteLoginSuccess(payload)))
-    .catch(error => dispatch(actions.deleteLoginError(error)));
-};
+  } catch (error) {}
+});

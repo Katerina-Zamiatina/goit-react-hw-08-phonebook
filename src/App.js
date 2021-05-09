@@ -3,6 +3,9 @@ import { Route, Switch } from 'react-router-dom';
 import Loader from 'react-loader-spinner';
 import routes from './routes';
 
+const HomePage = lazy(() =>
+  import('./pages/HomePage' /* webpackChunkName: "HomePage" */),
+);
 const RegisterPage = lazy(() =>
   import('./pages/RegisterPage' /* webpackChunkName: "RegisterPage" */),
 );
@@ -31,7 +34,8 @@ function App() {
         }
       >
         <Switch>
-          <Route exact path={routes.register} component={RegisterPage} />
+          <Route exact path={routes.home} component={HomePage} />
+          <Route path={routes.register} component={RegisterPage} />
           <Route path={routes.login} component={LoginPage} />
           <Route path={routes.contacts} component={ContactsPage} />
           {/* <Route component={NotFoundPage} /> */}

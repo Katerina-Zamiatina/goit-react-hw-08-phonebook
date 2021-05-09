@@ -1,12 +1,19 @@
-import { connect } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Loader from 'react-loader-spinner';
 import Container from '../components/Container';
 import Form from '../components/Form';
 import ContactsList from '../components/Contacts';
 import Filter from '../components/Filter';
+import { fetchContacts } from '../redux/contacts/contacts-operations';
 import { getLoading } from '../redux/contacts/contacts-selectors';
 
-function ContactsPage({ isLoading }) {
+function ContactsPage() {
+  const dispatch = useDispatch();
+  const isLoading = useSelector(getLoading);
+
+  useEffect(() => dispatch(fetchContacts()), [dispatch]);
+
   return (
     <Container>
       <h1>Phonebook</h1>
@@ -21,8 +28,4 @@ function ContactsPage({ isLoading }) {
   );
 }
 
-const mapStateToProps = state => ({
-  isLoading: getLoading(state),
-});
-
-export default connect(mapStateToProps, null)(ContactsPage);
+export default ContactsPage;
