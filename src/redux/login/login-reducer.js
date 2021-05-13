@@ -1,44 +1,32 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 import {
-  addLoginRequest,
-  addLoginSuccess,
-  addLoginError,
-  deleteLoginRequest,
-  deleteLoginSuccess,
-  deleteLoginError,
-  fetchLoginRequest,
-  fetchLoginSuccess,
-  fetchLoginError,
-  filterLogin,
+  registerRequest,
+  registerSuccess,
+  registerError,
+  loginRequest,
+  loginSuccess,
+  loginError,
+  logoutRequest,
+  logoutSuccess,
+  logoutError,
+  getCurrentUserRequest,
+  getCurrentUserSuccess,
+  getCurrentUserError,
 } from './login-actions';
 
-// { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' }
+const initialUserState = { name: null, email: null };
 
-const items = createReducer([], {
-  [fetchLoginSuccess]: (_, { payload }) => payload,
-  [addLoginSuccess]: (state, { payload }) =>
-    state.find(contact => contact.name === payload.name)
-      ? alert(`${payload.name} is already in contacts`)
-      : [...state, payload],
-  [deleteLoginSuccess]: (state, action) =>
-    state.filter(({ id }) => id !== action.payload),
+const user = createReducer(initialUserState, {
+  [registerSuccess]: (_, { payload }) => payload.user,
 });
 
-const filter = createReducer('', {
-  [filterLogin]: (_, action) => action.payload,
+const token = createReducer(null, {
+  [registerSuccess]: (_, { payload }) => payload.token,
 });
 
-const loading = createReducer(false, {
-  [addLoginRequest]: () => true,
-  [addLoginSuccess]: () => false,
-  [addLoginError]: () => false,
-  [deleteLoginRequest]: () => true,
-  [deleteLoginSuccess]: () => false,
-  [deleteLoginError]: () => false,
-  [fetchLoginRequest]: () => true,
-  [fetchLoginSuccess]: () => false,
-  [fetchLoginError]: () => false,
+const error = createReducer(null, {
+  [registerError]: (_, { payload }) => payload,
 });
 
-export default combineReducers({ items, filter, loading });
+export default combineReducers({ user, token, error });

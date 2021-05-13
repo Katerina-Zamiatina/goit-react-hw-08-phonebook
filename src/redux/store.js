@@ -10,6 +10,7 @@ import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 // } from 'redux-persist';
 // import storage from 'redux-persist/lib/storage';
 import contactsReducer from './contacts/contacts-reducer';
+import loginReducer from './login/login-reducer';
 
 // const middleware = [
 //   ...getDefaultMiddleware({
@@ -28,6 +29,7 @@ import contactsReducer from './contacts/contacts-reducer';
 
 export const store = configureStore({
   reducer: {
+    login: loginReducer,
     contacts: contactsReducer,
   },
   // middleware,

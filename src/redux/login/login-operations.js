@@ -1,11 +1,25 @@
 import axios from 'axios';
-import { createAsyncThunk } from '@reduxjs/toolkit';
+// import { createAsyncThunk } from '@reduxjs/toolkit';
+import {
+  registerRequest,
+  registerSuccess,
+  registerError,
+  loginRequest,
+  loginSuccess,
+  loginError,
+  logoutRequest,
+  logoutSuccess,
+  logoutError,
+  getCurrentUserRequest,
+  getCurrentUserSuccess,
+  getCurrentUserError,
+} from './login-actions';
 
-axios.defaults.baseURL = 'https://connections-api.herokuapp.com';
+axios.defaults.baseURL = 'https://connections-api.herokuapp.com/users';
 
 export const token = {
   set(token) {
-    axios.defaults.headers.common.Authorization = `Bearere ${token}`;
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
   },
   unset() {
     axios.defaults.headers.common.Authorization = '';
@@ -18,7 +32,44 @@ export const token = {
  * После успешной регистрации добавляем токен в HTTP-заголовок
  */
 
-const register = createAsyncThunk('auth/register', async credentials => {
+export const register = params => async dispatch => {
+  dispatch(registerRequest());
   try {
-  } catch (error) {}
-});
+    const response = await axios.post('/signup', params);
+    dispatch(registerSuccess(response.data));
+  } catch (error) {
+    dispatch(registerError(error.message));
+  }
+};
+
+/*
+ * POST @ /users/login
+ * body: { email, password }
+ * После успешного логина добавляем токен в HTTP-заголовок
+ */
+
+export const onLogin = params => async dispatch => {
+  dispatch(loginRequest());
+  try {
+    const response = await axios.post('/login', params);
+    dispatch(loginSuccess(response.data));
+  } catch (error) {
+    dispatch(loginError(error.message));
+  }
+};
+
+/*
+ * POST @ /users/logout
+ * headers: Authorization: Bearer token
+ * После успешного логаута, удаляем токен из HTTP-заголовка
+ */
+
+/*
+ * GET @ /users/current
+ * headers:
+ *    Authorization: Bearer token
+ *
+ * 1. Забираем токен из стейта через getState()
+ * 2. Если токена нет, выходим не выполняя никаких операций
+ * 3. Если токен есть, добавляет его в HTTP-заголовок и выполянем операцию
+ */
