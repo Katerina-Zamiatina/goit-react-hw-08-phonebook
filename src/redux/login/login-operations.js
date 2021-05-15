@@ -17,7 +17,7 @@ import {
 
 axios.defaults.baseURL = 'https://connections-api.herokuapp.com/users';
 
-export const token = {
+const token = {
   set(token) {
     axios.defaults.headers.common.Authorization = `Bearer ${token}`;
   },
@@ -64,6 +64,16 @@ export const onLogin = params => async dispatch => {
  * После успешного логаута, удаляем токен из HTTP-заголовка
  */
 
+export const onLogout = () => async dispatch => {
+  dispatch(logoutRequest());
+  try {
+    const response = await axios.post('/logout');
+    dispatch(logoutSuccess(response));
+  } catch (error) {
+    dispatch(logoutError(error.message));
+  }
+};
+
 /*
  * GET @ /users/current
  * headers:
@@ -73,3 +83,13 @@ export const onLogin = params => async dispatch => {
  * 2. Если токена нет, выходим не выполняя никаких операций
  * 3. Если токен есть, добавляет его в HTTP-заголовок и выполянем операцию
  */
+
+export const onGetUser = () => async (dispatch, getState) => {
+  dispatch(getCurrentUserRequest());
+  try {
+    const response = await axios.post('/current');
+    dispatch(getCurrentUserSuccess(response.data));
+  } catch (error) {
+    dispatch(getCurrentUserError(error.message));
+  }
+};

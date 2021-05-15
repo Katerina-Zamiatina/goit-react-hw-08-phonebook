@@ -1,4 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { getUserName } from '../../redux/login/login-selectors';
+import { onLogout } from '../../redux/login/login-operations';
 
 const styles = {
   container: {
@@ -22,12 +24,16 @@ const styles = {
 
 const UserMenu = () => {
   const dispatch = useDispatch();
-  // const name = useSelector();
+  const name = useSelector(getUserName);
 
   return (
     <div style={styles.container}>
-      <span style={styles.name}>Welcome to your Phonebook, name</span>
-      <button style={styles.button} type="button" onClick={() => dispatch()}>
+      <span style={styles.name}>Welcome to your Phonebook, {name}</span>
+      <button
+        style={styles.button}
+        type="button"
+        onClick={() => dispatch(onLogout())}
+      >
         Logout
       </button>
     </div>

@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 import Navigation from './Navigation';
 import UserMenu from './UserMenu';
 import LoginBar from './LoginBar';
+import { getIsLogged } from '../redux/login/login-selectors';
 
 const styles = {
   header: {
@@ -13,11 +14,11 @@ const styles = {
 };
 
 const AppBar = () => {
-  // const isLogged = useSelector();
+  const isLogged = useSelector(getIsLogged);
   return (
     <header style={styles.header}>
       <Navigation />
-      {false ? <UserMenu /> : <LoginBar />}
+      {isLogged ? <UserMenu /> : <LoginBar />}
     </header>
   );
 };

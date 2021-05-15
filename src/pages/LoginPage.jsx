@@ -27,7 +27,7 @@ const LoginPage = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} autoComplete="off">
+      <form onSubmit={handleSubmit}>
         <label htmlFor="">
           E-mail{' '}
           <input
