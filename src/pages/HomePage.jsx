@@ -1,5 +1,7 @@
 import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import routes from '../routes';
+import { getIsLogged } from '../redux/login/login-selectors';
 
 const styles = {
   container: { color: '#6c6767' },
@@ -23,33 +25,36 @@ const styles = {
 };
 
 const HomePage = () => {
+  const isLogged = useSelector(getIsLogged);
   return (
     <div style={styles.container}>
       <h1 style={styles.text}>PnoneBook App</h1>
-      <p style={styles.text}>
-        {' '}
-        Doesn't have an account yet, than
-        <NavLink
-          to={routes.register}
-          exact
-          style={styles.link}
-          activeStyle={styles.activeLink}
-        >
-          Register
-        </NavLink>
-      </p>
-      <p style={styles.text}>
-        {' '}
-        Allready has an account, than
-        <NavLink
-          to={routes.login}
-          exact
-          style={styles.link}
-          activeStyle={styles.activeLink}
-        >
-          Sign In
-        </NavLink>
-      </p>
+      {!isLogged && (
+        <>
+          <p style={styles.text}>
+            Doesn't have an account yet, than
+            <NavLink
+              to={routes.register}
+              exact
+              style={styles.link}
+              activeStyle={styles.activeLink}
+            >
+              Register
+            </NavLink>
+          </p>
+          <p style={styles.text}>
+            Allready has an account, than
+            <NavLink
+              to={routes.login}
+              exact
+              style={styles.link}
+              activeStyle={styles.activeLink}
+            >
+              Sign In
+            </NavLink>
+          </p>
+        </>
+      )}
     </div>
   );
 };

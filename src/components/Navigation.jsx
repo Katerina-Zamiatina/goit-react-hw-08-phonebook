@@ -28,7 +28,7 @@ const Navigation = () => {
       >
         Home
       </NavLink>
-      {isLogged ? (
+      {isLogged && (
         <NavLink
           to={routes.contacts}
           exact
@@ -37,7 +37,7 @@ const Navigation = () => {
         >
           Contacts
         </NavLink>
-      ) : null}
+      )}
     </nav>
   );
 };
