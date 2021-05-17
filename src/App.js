@@ -5,6 +5,7 @@ import AppBar from './components/AppBar';
 import Loader from 'react-loader-spinner';
 import routes from './routes';
 import { onGetUser } from './redux/login/login-operations';
+import PrivateRoute from './components/PrivateRoute';
 
 const HomePage = lazy(() =>
   import('./pages/HomePage' /* webpackChunkName: "HomePage" */),
@@ -44,7 +45,11 @@ const App = () => {
           <Route exact path={routes.home} component={HomePage} />
           <Route path={routes.register} component={RegisterPage} />
           <Route path={routes.login} component={LoginPage} />
-          <Route path={routes.contacts} component={ContactsPage} />
+          <PrivateRoute
+            path={routes.contacts}
+            component={ContactsPage}
+            redirectTo={routes.login}
+          />
           {/* <Route component={NotFoundPage} /> */}
         </Switch>
       </Suspense>

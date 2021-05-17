@@ -1,4 +1,6 @@
 import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { getIsLogged } from '../redux/login/login-selectors';
 import routes from '../routes';
 
 const styles = {
@@ -15,6 +17,7 @@ const styles = {
 };
 
 const Navigation = () => {
+  const isLogged = useSelector(getIsLogged);
   return (
     <nav>
       <NavLink
@@ -25,14 +28,16 @@ const Navigation = () => {
       >
         Home
       </NavLink>
-      <NavLink
-        to={routes.contacts}
-        exact
-        style={styles.link}
-        activeStyle={styles.activeLink}
-      >
-        Contacts
-      </NavLink>
+      {isLogged ? (
+        <NavLink
+          to={routes.contacts}
+          exact
+          style={styles.link}
+          activeStyle={styles.activeLink}
+        >
+          Contacts
+        </NavLink>
+      ) : null}
     </nav>
   );
 };
