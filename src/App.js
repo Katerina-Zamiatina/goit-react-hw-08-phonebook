@@ -1,8 +1,10 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import AppBar from './components/AppBar';
 import Loader from 'react-loader-spinner';
 import routes from './routes';
+import { onGetUser } from './redux/login/login-operations';
 
 const HomePage = lazy(() =>
   import('./pages/HomePage' /* webpackChunkName: "HomePage" */),
@@ -20,7 +22,10 @@ const ContactsPage = lazy(() =>
 //   import('./pages/NotFoundPage' /* webpackChunkName: "NotFoundPage" */),
 // );
 
-function App() {
+const App = () => {
+  const dispatch = useDispatch();
+  useEffect(() => dispatch(onGetUser()), [dispatch]);
+
   return (
     <>
       <AppBar />
@@ -45,6 +50,6 @@ function App() {
       </Suspense>
     </>
   );
-}
+};
 
 export default App;

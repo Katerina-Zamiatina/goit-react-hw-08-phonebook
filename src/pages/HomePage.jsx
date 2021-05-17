@@ -28,7 +28,7 @@ const HomePage = () => {
       <h1 style={styles.text}>PnoneBook App</h1>
       <p style={styles.text}>
         {' '}
-        Doesn't have an account, than
+        Doesn't have an account yet, than
         <NavLink
           to={routes.register}
           exact

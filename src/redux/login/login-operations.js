@@ -15,7 +15,7 @@ import {
   getCurrentUserError,
 } from './login-actions';
 
-axios.defaults.baseURL = 'https://connections-api.herokuapp.com/users';
+axios.defaults.baseURL = 'https://connections-api.herokuapp.com';
 
 const token = {
   set(token) {
@@ -32,10 +32,11 @@ const token = {
  * После успешной регистрации добавляем токен в HTTP-заголовок
  */
 
-export const register = params => async dispatch => {
+export const register = payload => async dispatch => {
   dispatch(registerRequest());
   try {
-    const response = await axios.post('/signup', params);
+    const response = await axios.post('/users/signup', payload);
+    token.set(response.data.token);
     dispatch(registerSuccess(response.data));
   } catch (error) {
     dispatch(registerError(error.message));
@@ -48,10 +49,11 @@ export const register = params => async dispatch => {
  * После успешного логина добавляем токен в HTTP-заголовок
  */
 
-export const onLogin = params => async dispatch => {
+export const onLogin = payload => async dispatch => {
   dispatch(loginRequest());
   try {
-    const response = await axios.post('/login', params);
+    const response = await axios.post('/users/login', payload);
+    token.set(response.data.token);
     dispatch(loginSuccess(response.data));
   } catch (error) {
     dispatch(loginError(error.message));
@@ -67,8 +69,9 @@ export const onLogin = params => async dispatch => {
 export const onLogout = () => async dispatch => {
   dispatch(logoutRequest());
   try {
-    const response = await axios.post('/logout');
-    dispatch(logoutSuccess(response));
+    await axios.post('/users/logout');
+    token.unset();
+    dispatch(logoutSuccess());
   } catch (error) {
     dispatch(logoutError(error.message));
   }
@@ -85,10 +88,17 @@ export const onLogout = () => async dispatch => {
  */
 
 export const onGetUser = () => async (dispatch, getState) => {
+  const {
+    login: { token: persistedToken },
+  } = getState();
+  if (!persistedToken) {
+    return;
+  }
+  token.set(persistedToken);
   dispatch(getCurrentUserRequest());
   try {
-    const response = await axios.post('/current');
-    dispatch(getCurrentUserSuccess(response.data));
+    const { data } = await axios.get('/users/current');
+    dispatch(getCurrentUserSuccess(data));
   } catch (error) {
     dispatch(getCurrentUserError(error.message));
   }
