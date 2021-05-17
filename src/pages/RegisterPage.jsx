@@ -30,13 +30,13 @@ const RegisterPage = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <label>
+    <div className="form-container">
+      <form onSubmit={handleSubmit} className="form">
+        <label className="label">
           Name
           <input type="name" name="name" value={name} onChange={handleChange} />
         </label>
-        <label>
+        <label className="label">
           E-mail
           <input
             type="email"
@@ -45,7 +45,7 @@ const RegisterPage = () => {
             onChange={handleChange}
           />
         </label>
-        <label>
+        <label className="label">
           Password
           <input
             type="password"
@@ -57,7 +57,9 @@ const RegisterPage = () => {
           />
         </label>
 
-        <button type="submit">Register</button>
+        <button type="submit" className="button">
+          Register
+        </button>
       </form>
     </div>
   );

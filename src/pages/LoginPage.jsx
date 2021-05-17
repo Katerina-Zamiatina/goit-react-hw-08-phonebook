@@ -26,10 +26,10 @@ const LoginPage = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="">
-          E-mail{' '}
+    <div className="form-container">
+      <form onSubmit={handleSubmit} className="form">
+        <label className="label">
+          E-mail
           <input
             type="email"
             name="email"
@@ -37,8 +37,8 @@ const LoginPage = () => {
             onChange={handleChange}
           />
         </label>
-        <label htmlFor="">
-          Password{' '}
+        <label className="label">
+          Password
           <input
             type="password"
             name="password"
@@ -46,7 +46,9 @@ const LoginPage = () => {
             onChange={handleChange}
           />
         </label>
-        <button type="submit">Login</button>
+        <button type="submit" className="button">
+          Login
+        </button>
       </form>
     </div>
   );
