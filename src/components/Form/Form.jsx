@@ -19,11 +19,11 @@ const Form = ({ contacts, onSubmit }) => {
   const handleFormSubmit = e => {
     e.preventDefault();
     const existingContact = contacts.find(item => item.name === contact.name);
-    if (!existingContact) {
-      onSubmit(contact);
+    if (existingContact) {
+      resetForm();
+      return alert(`${contact.name} is already in contacts`);
     }
-    resetForm();
-    alert(`${contact.name} is already in contacts`);
+    onSubmit(contact);
   };
 
   const resetForm = () => {

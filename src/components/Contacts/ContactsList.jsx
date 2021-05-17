@@ -1,17 +1,12 @@
-import { connect } from 'react-redux';
-import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import ContactItem from './ContactItem';
-import {
-  deleteContact,
-  fetchContacts,
-} from '../../redux/contacts/contacts-operations';
+import { deleteContact } from '../../redux/contacts/contacts-operations';
 import { getVisibleContacts } from '../../redux/contacts/contacts-selectors';
 
-const Contacts = ({ contacts, onDeleteContact, getContacts }) => {
-  useEffect(() => {
-    getContacts();
-    // eslint-disable-next-line
-  }, []);
+const Contacts = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(getVisibleContacts);
+  const onDelete = id => dispatch(deleteContact(id));
 
   return (
     <ul>
@@ -20,20 +15,11 @@ const Contacts = ({ contacts, onDeleteContact, getContacts }) => {
           key={id}
           name={name}
           number={number}
-          onDelete={() => onDeleteContact(id)}
+          onDelete={() => onDelete(id)}
         />
       ))}
     </ul>
   );
 };
 
-const mapStateToProps = state => ({
-  contacts: getVisibleContacts(state),
-});
-
-const mapDispatchToProps = dispatch => ({
-  getContacts: () => dispatch(fetchContacts()),
-  onDeleteContact: id => dispatch(deleteContact(id)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Contacts);
+export default Contacts;

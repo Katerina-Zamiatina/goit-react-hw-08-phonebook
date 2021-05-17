@@ -52,7 +52,7 @@ const RegisterPage = () => {
             name="password"
             value={password}
             onChange={handleChange}
-            pattern="{8,}"
+            pattern="{8}"
             title="Password should be more than 8 characters"
           />
         </label>

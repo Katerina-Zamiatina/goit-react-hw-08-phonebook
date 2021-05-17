@@ -1,12 +1,16 @@
 import { lazy, Suspense, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Switch } from 'react-router-dom';
-import AppBar from './components/AppBar';
+
 import Loader from 'react-loader-spinner';
-import routes from './routes';
-import { onGetUser } from './redux/login/login-operations';
+
 import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
+import AppBar from './components/AppBar';
+
+import routes from './routes';
+
+import { onGetUser } from './redux/login/login-operations';
 
 const HomePage = lazy(() =>
   import('./pages/HomePage' /* webpackChunkName: "HomePage" */),
@@ -20,9 +24,6 @@ const LoginPage = lazy(() =>
 const ContactsPage = lazy(() =>
   import('./pages/ContactsPage' /* webpackChunkName: "ContactsPage" */),
 );
-// const NotFoundPage = lazy(() =>
-//   import('./pages/NotFoundPage' /* webpackChunkName: "NotFoundPage" */),
-// );
 
 const App = () => {
   const dispatch = useDispatch();
@@ -47,7 +48,7 @@ const App = () => {
           <PublicRoute
             path={routes.register}
             component={RegisterPage}
-            redirectTo={routes.home}
+            redirectTo={routes.contacts}
             restricted
           />
           <PublicRoute
@@ -61,7 +62,6 @@ const App = () => {
             component={ContactsPage}
             redirectTo={routes.login}
           />
-          {/* <Route component={NotFoundPage} /> */}
         </Suspense>
       </Switch>
     </>
